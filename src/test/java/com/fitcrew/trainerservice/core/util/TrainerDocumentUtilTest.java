@@ -1,13 +1,12 @@
 package com.fitcrew.trainerservice.core.util;
 
+import com.fitcrew.FitCrewAppModel.domain.dto.TrainerDto;
 import com.fitcrew.trainerservice.domains.TrainerDocument;
-import com.fitcrew.trainerservice.dto.TrainerDto;
 import com.fitcrew.trainerservice.util.TrainerUtil;
 import org.junit.jupiter.api.Test;
 
 import static com.fitcrew.trainerservice.util.TrainerUtil.*;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class TrainerDocumentUtilTest {
 

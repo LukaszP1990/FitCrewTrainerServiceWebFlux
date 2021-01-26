@@ -1,7 +1,7 @@
 package com.fitcrew.trainerservice.util;
 
+import com.fitcrew.FitCrewAppModel.domain.dto.TrainingDto;
 import com.fitcrew.FitCrewAppModel.domain.model.TrainingModel;
-import com.fitcrew.trainerservice.dto.TrainingDto;
 
 import java.util.Collections;
 import java.util.List;

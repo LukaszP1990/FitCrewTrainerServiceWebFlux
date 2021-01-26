@@ -1,11 +1,11 @@
 package com.fitcrew.trainerservice.service.trainer;
 
+import com.fitcrew.FitCrewAppModel.domain.dto.TrainerDto;
+import com.fitcrew.FitCrewAppModel.domain.dto.TrainingDto;
 import com.fitcrew.FitCrewAppModel.domain.model.TrainerModel;
 import com.fitcrew.FitCrewAppModel.domain.model.TrainingModel;
 import com.fitcrew.jwt.model.AuthenticationRequest;
 import com.fitcrew.jwt.model.AuthenticationResponse;
-import com.fitcrew.trainerservice.dto.TrainerDto;
-import com.fitcrew.trainerservice.dto.TrainingDto;
 import reactor.core.publisher.Mono;
 
 import java.util.List;

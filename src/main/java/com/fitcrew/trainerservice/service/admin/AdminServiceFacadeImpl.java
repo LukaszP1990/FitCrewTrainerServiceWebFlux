@@ -1,7 +1,7 @@
 package com.fitcrew.trainerservice.service.admin;
 
+import com.fitcrew.FitCrewAppModel.domain.dto.TrainerDto;
 import com.fitcrew.FitCrewAppModel.domain.model.TrainerModel;
-import com.fitcrew.trainerservice.dto.TrainerDto;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
 

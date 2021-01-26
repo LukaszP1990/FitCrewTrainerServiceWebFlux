@@ -1,11 +1,10 @@
 package com.fitcrew.trainerservice.core.converter;
 
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-
+import com.fitcrew.FitCrewAppModel.domain.dto.TrainerDto;
 import com.fitcrew.FitCrewAppModel.domain.model.TrainerModel;
 import com.fitcrew.trainerservice.domains.TrainerDocument;
-import com.fitcrew.trainerservice.dto.TrainerDto;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
 @Mapper
 public interface TrainerConverter {

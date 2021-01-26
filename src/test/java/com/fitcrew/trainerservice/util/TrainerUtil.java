@@ -1,11 +1,11 @@
 package com.fitcrew.trainerservice.util;
 
+import com.fitcrew.FitCrewAppModel.domain.dto.RatingTrainerDto;
+import com.fitcrew.FitCrewAppModel.domain.dto.TrainerDto;
 import com.fitcrew.FitCrewAppModel.domain.model.RankingModel;
 import com.fitcrew.FitCrewAppModel.domain.model.RatingTrainerModel;
 import com.fitcrew.FitCrewAppModel.domain.model.TrainerModel;
 import com.fitcrew.trainerservice.domains.TrainerDocument;
-import com.fitcrew.trainerservice.dto.RatingTrainerDto;
-import com.fitcrew.trainerservice.dto.TrainerDto;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -48,46 +48,10 @@ public class TrainerUtil {
                 .build();
     }
 
-    public static List<TrainerModel> getTrainerModels() {
-        return IntStream.rangeClosed(1, 3)
-                .mapToObj(value ->  prepareTrainerModelData(String.valueOf(value), value))
-                .collect(Collectors.toList());
-    }
-
     public static TrainerModel getTrainerModel() {
         return prepareTrainerModelData(String.valueOf(1), 1);
     }
 
-    public static RatingTrainerModel getRatingTrainerModel() {
-        return RatingTrainerModel.builder()
-                .firstName(TRAINER_FIRST_NAME)
-                .lastName(TRAINER_LAST_NAME)
-                .rating(10)
-                .build();
-    }
-
-    public static RatingTrainerDto getRatingTrainerDto() {
-        return RatingTrainerDto.builder()
-                .firstName(TRAINER_FIRST_NAME)
-                .lastName(TRAINER_LAST_NAME)
-                .rating(10)
-                .build();
-    }
-
-
-    public static List<RankingModel> getRankingModels() {
-        return IntStream.rangeClosed(1, 3)
-                .mapToObj(TrainerUtil::getRankingModel)
-                .collect(Collectors.toList());
-    }
-
-    private static RankingModel getRankingModel(Integer place) {
-        return RankingModel.builder()
-                .trainerFirstName(TRAINER_FIRST_NAME)
-                .trainerLastName(TRAINER_LAST_NAME)
-                .placeInTheRanking(place)
-                .build();
-    }
 
     private static TrainerDocument prepareTrainerDocumentData(String placeInTheRanking,
                                                               Integer value) {

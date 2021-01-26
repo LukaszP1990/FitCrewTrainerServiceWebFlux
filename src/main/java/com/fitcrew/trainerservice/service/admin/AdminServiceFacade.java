@@ -1,11 +1,10 @@
 package com.fitcrew.trainerservice.service.admin;
 
-import java.util.List;
-
+import com.fitcrew.FitCrewAppModel.domain.dto.TrainerDto;
 import com.fitcrew.FitCrewAppModel.domain.model.TrainerModel;
-import com.fitcrew.trainerservice.dto.TrainerDto;
-
 import reactor.core.publisher.Mono;
+
+import java.util.List;
 
 public interface AdminServiceFacade {
 

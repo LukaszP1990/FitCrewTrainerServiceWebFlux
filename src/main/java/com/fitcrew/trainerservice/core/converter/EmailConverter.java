@@ -1,11 +1,10 @@
 package com.fitcrew.trainerservice.core.converter;
 
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-
+import com.fitcrew.FitCrewAppModel.domain.dto.EmailDto;
 import com.fitcrew.FitCrewAppModel.domain.model.EmailModel;
 import com.fitcrew.trainerservice.domains.EmailDocument;
-import com.fitcrew.trainerservice.dto.EmailDto;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
 @Mapper
 public interface EmailConverter {

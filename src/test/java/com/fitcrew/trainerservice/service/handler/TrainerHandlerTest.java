@@ -1,10 +1,10 @@
 package com.fitcrew.trainerservice.service.handler;
 
 import com.fitcrew.FitCrewAppConstant.message.type.RoleType;
+import com.fitcrew.FitCrewAppModel.domain.dto.TrainingDto;
 import com.fitcrew.FitCrewAppModel.domain.model.TrainerModel;
 import com.fitcrew.FitCrewAppModel.domain.model.TrainingModel;
 import com.fitcrew.trainerservice.AbstractIntegrationTest;
-import com.fitcrew.trainerservice.dto.TrainingDto;
 import com.fitcrew.trainerservice.feignclient.FeignTrainingService;
 import com.fitcrew.trainerservice.service.cache.TrainerModelCache;
 import com.fitcrew.trainerservice.util.TrainingUtil;
@@ -16,8 +16,8 @@ import reactor.core.publisher.Mono;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.fitcrew.trainerservice.util.TrainerUtil.*;
-import static com.fitcrew.trainerservice.util.TrainingUtil.*;
+import static com.fitcrew.trainerservice.util.TrainerUtil.TRAINER_EMAIL;
+import static com.fitcrew.trainerservice.util.TrainingUtil.TRAINING_NAME;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;

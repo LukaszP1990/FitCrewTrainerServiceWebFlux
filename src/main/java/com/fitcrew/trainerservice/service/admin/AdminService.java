@@ -1,11 +1,11 @@
 package com.fitcrew.trainerservice.service.admin;
 
+import com.fitcrew.FitCrewAppModel.domain.dto.TrainerDto;
 import com.fitcrew.FitCrewAppModel.domain.model.TrainerModel;
 import com.fitcrew.trainerservice.core.converter.TrainerConverter;
 import com.fitcrew.trainerservice.core.util.TrainerDocumentUtil;
 import com.fitcrew.trainerservice.dao.TrainerRepository;
 import com.fitcrew.trainerservice.domains.TrainerDocument;
-import com.fitcrew.trainerservice.dto.TrainerDto;
 import com.fitcrew.trainerservice.service.cache.TrainerModelCache;
 import com.fitcrew.trainerservice.service.cache.TrainerModelCacheService;
 import io.vavr.control.Try;

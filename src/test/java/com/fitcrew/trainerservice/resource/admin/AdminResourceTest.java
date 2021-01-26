@@ -1,9 +1,9 @@
 package com.fitcrew.trainerservice.resource.admin;
 
 import com.fitcrew.FitCrewAppConstant.message.type.RoleType;
+import com.fitcrew.FitCrewAppModel.domain.dto.TrainerDto;
 import com.fitcrew.FitCrewAppModel.domain.model.TrainerModel;
 import com.fitcrew.trainerservice.AbstractIntegrationTest;
-import com.fitcrew.trainerservice.dto.TrainerDto;
 import com.fitcrew.trainerservice.service.cache.TrainerModelCache;
 import com.fitcrew.trainerservice.util.TrainerUtil;
 import org.junit.jupiter.api.Test;

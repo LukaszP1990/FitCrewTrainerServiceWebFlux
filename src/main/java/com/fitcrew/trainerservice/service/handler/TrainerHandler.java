@@ -1,9 +1,9 @@
 package com.fitcrew.trainerservice.service.handler;
 
 import com.fitcrew.FitCrewAppConstant.message.type.ErrorType;
+import com.fitcrew.FitCrewAppModel.domain.dto.TrainingDto;
 import com.fitcrew.trainerservice.core.util.QueryParamUtil;
 import com.fitcrew.trainerservice.core.util.ServerResponseUtil;
-import com.fitcrew.trainerservice.dto.TrainingDto;
 import com.fitcrew.trainerservice.service.trainer.TrainerServiceFacade;
 import io.vavr.Tuple;
 import org.springframework.security.access.prepost.PreAuthorize;

@@ -1,8 +1,7 @@
 package com.fitcrew.trainerservice.core.util;
 
+import com.fitcrew.FitCrewAppModel.domain.dto.TrainerDto;
 import com.fitcrew.trainerservice.domains.TrainerDocument;
-import com.fitcrew.trainerservice.dto.TrainerDto;
-
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -10,7 +9,7 @@ import lombok.NoArgsConstructor;
 public class TrainerDocumentUtil {
 
 	public static TrainerDocument getUpdatedTrainerDocument(TrainerDto trainerDto,
-													  TrainerDocument trainerDocument) {
+															TrainerDocument trainerDocument) {
 		trainerDocument.setTrainerId(trainerDto.getTrainerId());
 		trainerDocument.setDateOfBirth(trainerDto.getDateOfBirth());
 		trainerDocument.setEncryptedPassword(trainerDto.getEncryptedPassword());

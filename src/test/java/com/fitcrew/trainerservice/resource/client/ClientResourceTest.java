@@ -6,7 +6,6 @@ import com.fitcrew.FitCrewAppModel.domain.model.RankingModel;
 import com.fitcrew.FitCrewAppModel.domain.model.RatingTrainerModel;
 import com.fitcrew.FitCrewAppModel.domain.model.TrainerModel;
 import com.fitcrew.trainerservice.AbstractIntegrationTest;
-import com.fitcrew.trainerservice.dto.EmailDto;
 import com.fitcrew.trainerservice.util.EmailUtil;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
@@ -18,7 +17,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class ClientResourceTest extends AbstractIntegrationTest {
 
     public static final String CLIENT_EMAIL = "mockedClient@gmail.com";
-    private static final EmailDto emailDto = EmailUtil.getEmailDto();
     private static final EmailModel emailModel = EmailUtil.getEmailModel();
     private static final String trainerEmail = String.valueOf(1).concat(TRAINER_EMAIL);
 

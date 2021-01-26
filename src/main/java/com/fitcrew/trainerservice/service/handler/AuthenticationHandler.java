@@ -1,9 +1,9 @@
 package com.fitcrew.trainerservice.service.handler;
 
 import com.fitcrew.FitCrewAppConstant.message.type.ErrorType;
+import com.fitcrew.FitCrewAppModel.domain.dto.TrainerDto;
 import com.fitcrew.jwt.model.AuthenticationRequest;
 import com.fitcrew.trainerservice.core.util.ServerResponseUtil;
-import com.fitcrew.trainerservice.dto.TrainerDto;
 import com.fitcrew.trainerservice.service.trainer.TrainerServiceFacade;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.server.ServerRequest;

@@ -1,8 +1,8 @@
 package com.fitcrew.trainerservice.util;
 
+import com.fitcrew.FitCrewAppModel.domain.dto.EmailDto;
 import com.fitcrew.FitCrewAppModel.domain.model.EmailModel;
 import com.fitcrew.trainerservice.domains.EmailDocument;
-import com.fitcrew.trainerservice.dto.EmailDto;
 
 public class EmailUtil {
 

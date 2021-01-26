@@ -1,5 +1,7 @@
 package com.fitcrew.trainerservice.service.trainer;
 
+import com.fitcrew.FitCrewAppModel.domain.dto.TrainerDto;
+import com.fitcrew.FitCrewAppModel.domain.dto.TrainingDto;
 import com.fitcrew.FitCrewAppModel.domain.model.TrainerModel;
 import com.fitcrew.FitCrewAppModel.domain.model.TrainingModel;
 import com.fitcrew.jwt.model.AuthenticationRequest;
@@ -10,8 +12,6 @@ import com.fitcrew.trainerservice.core.converter.TrainerConverter;
 import com.fitcrew.trainerservice.core.converter.TrainingConverter;
 import com.fitcrew.trainerservice.dao.TrainerRepository;
 import com.fitcrew.trainerservice.domains.TrainerDocument;
-import com.fitcrew.trainerservice.dto.TrainerDto;
-import com.fitcrew.trainerservice.dto.TrainingDto;
 import com.fitcrew.trainerservice.feignclient.FeignTrainingService;
 import com.fitcrew.trainerservice.service.cache.AuthenticationRequestCache;
 import com.fitcrew.trainerservice.service.cache.TrainerModelCacheService;

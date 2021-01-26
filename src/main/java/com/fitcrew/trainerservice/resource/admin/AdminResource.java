@@ -1,7 +1,7 @@
 package com.fitcrew.trainerservice.resource.admin;
 
+import com.fitcrew.FitCrewAppModel.domain.dto.TrainerDto;
 import com.fitcrew.FitCrewAppModel.domain.model.TrainerModel;
-import com.fitcrew.trainerservice.dto.TrainerDto;
 import com.fitcrew.trainerservice.service.admin.AdminServiceFacade;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;

@@ -1,5 +1,6 @@
 package com.fitcrew.trainerservice.service.client;
 
+import com.fitcrew.FitCrewAppModel.domain.dto.EmailDto;
 import com.fitcrew.FitCrewAppModel.domain.model.EmailModel;
 import com.fitcrew.FitCrewAppModel.domain.model.RatingTrainerModel;
 import com.fitcrew.FitCrewAppModel.domain.model.TrainerModel;
@@ -10,7 +11,6 @@ import com.fitcrew.trainerservice.dao.TrainerRepository;
 import com.fitcrew.trainerservice.domains.EmailDocument;
 import com.fitcrew.trainerservice.domains.RatingTrainerDocument;
 import com.fitcrew.trainerservice.domains.TrainerDocument;
-import com.fitcrew.trainerservice.dto.EmailDto;
 import com.fitcrew.trainerservice.util.EmailUtil;
 import com.fitcrew.trainerservice.util.RatingTrainerDocumentUtil;
 import com.fitcrew.trainerservice.util.TrainerUtil;
@@ -38,7 +38,6 @@ class ClientServiceTest {
     private static final List<TrainerDocument> trainerDocuments = TrainerUtil.getTrainerDocuments();
     private static final TrainerDocument trainerDocument = TrainerUtil.getTrainerDocument();
     private static final EmailDocument emailDocument = EmailUtil.getEmailDocument();
-    private static final EmailDto emailDto = EmailUtil.getEmailDto();
     private static final EmailModel emailModel = EmailUtil.getEmailModel();
     private static final List<RatingTrainerDocument> ratingTrainerDocuments = RatingTrainerDocumentUtil.getRatingTrainerDocuments();
     private static final RatingTrainerDocument ratingTrainerDocument = RatingTrainerDocumentUtil.getRatingTrainerDocument(1);
