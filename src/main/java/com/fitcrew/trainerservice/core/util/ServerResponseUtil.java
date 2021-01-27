@@ -23,6 +23,12 @@ public class ServerResponseUtil {
 				.body(BodyInserters.fromValue(getMessageDto(errorMsg)));
 	}
 
+	public static <T> Mono<ServerResponse> badRequest(T body) {
+		return ServerResponse
+				.badRequest()
+				.bodyValue(body);
+	}
+
 	private static ErrorMsgDto getMessageDto(ErrorType messageError) {
 		return ErrorMsgDto.builder()
 				.text(messageError.getText())

@@ -18,6 +18,7 @@ import com.fitcrew.trainerservice.service.cache.TrainerModelCacheService;
 import io.vavr.Tuple;
 import io.vavr.control.Try;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
@@ -114,7 +115,7 @@ public class TrainerService {
                                        String trainingName) {
         log.info("Update training: {}", trainingName);
         return Try.of(() -> Tuple.of(trainingDto, trainingName))
-                .filter(trainingDtoTrainingNameTuple -> Objects.nonNull(trainingDtoTrainingNameTuple._1) && Objects.nonNull(trainingDtoTrainingNameTuple._2))
+                .filter(trainingDtoTrainingNameTuple -> ObjectUtils.allNotNull(trainingDtoTrainingNameTuple._1, trainingDtoTrainingNameTuple._2))
                 .map(trainingDtoTrainingNameTuple -> Tuple.of(trainingConverter.trainingDtoToTrainingModel(trainingDtoTrainingNameTuple._1), trainingDtoTrainingNameTuple._2))
                 .map(trainerEmailTrainingNameTuple -> feignTrainingService.updateTraining(trainerEmailTrainingNameTuple._1, trainerEmailTrainingNameTuple._2))
                 .map(trainingModelMono -> trainingModelMono.filter(Objects::nonNull)
@@ -126,7 +127,7 @@ public class TrainerService {
                                        String trainingName) {
         log.info("Delete training: {} created by: {}", trainingName, trainerEmail);
         return Try.of(() -> Tuple.of(trainerEmail, trainingName))
-                .filter(trainerEmailTrainingNameTuple -> Objects.nonNull(trainerEmailTrainingNameTuple._1) && Objects.nonNull(trainerEmailTrainingNameTuple._2))
+                .filter(trainerEmailTrainingNameTuple -> ObjectUtils.allNotNull(trainerEmailTrainingNameTuple._1, trainerEmailTrainingNameTuple._2))
                 .map(trainerEmailTrainingNameTuple -> feignTrainingService.deleteTraining(trainerEmailTrainingNameTuple._1, trainerEmailTrainingNameTuple._2))
                 .map(trainingModelMono -> trainingModelMono.filter(Objects::nonNull)
                         .map(trainingModel -> trainingModel))
@@ -137,7 +138,7 @@ public class TrainerService {
                                              String trainingName) {
         log.info("Select training training: {} to send", trainingName);
         return Try.of(() -> Tuple.of(trainerEmail, trainingName))
-                .filter(trainerEmailTrainingNameTuple -> Objects.nonNull(trainerEmailTrainingNameTuple._1) && Objects.nonNull(trainerEmailTrainingNameTuple._2))
+                .filter(trainerEmailTrainingNameTuple -> ObjectUtils.allNotNull(trainerEmailTrainingNameTuple._1, trainerEmailTrainingNameTuple._2))
                 .map(trainerEmailTrainingNameTuple -> feignTrainingService.selectTraining(trainerEmailTrainingNameTuple._1, trainerEmailTrainingNameTuple._2))
                 .map(trainingModelMono -> trainingModelMono.filter(Objects::nonNull)
                         .map(trainingModel -> trainingModel))

@@ -6,7 +6,7 @@ import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 
 import reactivefeign.spring.config.EnableReactiveFeignClients;
 
-@SpringBootApplication(scanBasePackages = {"com.fitcrew.trainerservice", "com.fitcrew.jwt"})
+@SpringBootApplication(scanBasePackages = {"com.fitcrew.trainerservice", "com.fitcrew.jwt", "com.fitcrew.validatorservice"})
 @EnableEurekaClient
 @EnableReactiveFeignClients
 public class TrainerServiceApplication {

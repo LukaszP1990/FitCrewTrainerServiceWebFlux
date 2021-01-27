@@ -130,7 +130,8 @@ public class ClientService {
 
     private boolean areFirstAndLastNameEquals(Tuple2<String, String> recipient,
                                               TrainerDocument trainerDocument) {
-        return recipient._1.equals(trainerDocument.getFirstName()) && recipient._2.equals(trainerDocument.getLastName());
+        return recipient._1.equals(trainerDocument.getFirstName()) &&
+                recipient._2.equals(trainerDocument.getLastName());
     }
 
     private List<TrainerModel> getTrainerModels(List<TrainerDocument> trainerDocuments) {
