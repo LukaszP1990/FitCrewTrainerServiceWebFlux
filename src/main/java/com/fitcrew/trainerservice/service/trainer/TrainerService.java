@@ -145,6 +145,15 @@ public class TrainerService {
                 .getOrNull();
     }
 
+    Mono<TrainerModel> getTrainerByTrainerId(String trainerId) {
+        log.info("Get trainer by trainer id: {}", trainerId);
+        return Try.of(() -> trainerId)
+                .map(id -> trainerRepository.getTrainerByTrainerId(trainerId))
+                .map(trainerDocumentMono -> trainerDocumentMono.filter(Objects::nonNull)
+                        .map(trainerConverter::trainerDocumentToTrainerModel))
+                .getOrNull();
+    }
+
     private Mono<AuthenticationResponse> getAuthenticationResponse(AuthenticationRequest authenticationRequest) {
         return authenticationRequestCache.get(authenticationRequest.getEmail())
                 .flatMap(authReq -> getAuthenticationResponseFromCache(authReq, authenticationRequest))

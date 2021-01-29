@@ -10,4 +10,6 @@ import reactor.core.publisher.Mono;
 @Repository
 public interface TrainerRepository extends ReactiveMongoRepository<TrainerDocument, String> {
 	Mono<TrainerDocument> findByEmail(String email);
+
+    Mono<TrainerDocument> getTrainerByTrainerId(String trainerId);
 }

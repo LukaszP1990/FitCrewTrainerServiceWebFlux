@@ -74,4 +74,9 @@ public class TrainerServiceFacadeImpl implements TrainerServiceFacade {
                 .filter(trainerDocument -> Objects.nonNull(trainerDocument.getTrainerId()))
                 .map(trainerConverter::trainerDocumentToTrainerModel);
     }
+
+    @Override
+    public Mono<TrainerModel> getTrainerByTrainerId(String trainerId) {
+        return trainerService.getTrainerByTrainerId(trainerId);
+    }
 }

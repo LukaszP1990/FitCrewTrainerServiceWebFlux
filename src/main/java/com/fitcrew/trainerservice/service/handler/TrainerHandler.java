@@ -24,6 +24,7 @@ public class TrainerHandler {
 
     private static final String TRAINING_NAME = "training-name";
     private static final String TRAINER_EMAIL = "trainer-email";
+    private static final String TRAINER_ID = "trainer-id";
 
     private final TrainerServiceFacade trainerServiceFacade;
     private final ValidatorFactory validatorFactory;
@@ -94,11 +95,20 @@ public class TrainerHandler {
         var trainerEmail = QueryParamUtil.getQueryParamValue(serverRequest, TRAINER_EMAIL);
         var trainingName = QueryParamUtil.getQueryParamValue(serverRequest, TRAINING_NAME);
         return Mono.just(Tuple.of(trainerEmail, trainingName))
-                .filter(queryParams -> Objects.nonNull(queryParams._1) && Objects.nonNull(queryParams._2))
+                .filter(queryParams -> ObjectUtils.allNotNull(queryParams._1, queryParams._2))
                 .flatMap(queryParams -> trainerServiceFacade.selectTrainingToSend(queryParams._1, queryParams._2))
                 .filter(Objects::nonNull)
                 .flatMap(ServerResponseUtil::ok)
                 .switchIfEmpty(ServerResponseUtil.badRequest(ErrorType.NO_TRAINING_SELECTED));
+    }
+
+    public Mono<ServerResponse> getTrainerByTrainerId(ServerRequest serverRequest) {
+        var trainerId = QueryParamUtil.getQueryParamValue(serverRequest, TRAINER_ID);
+        return Mono.justOrEmpty(trainerId)
+                .filter(Objects::nonNull)
+                .flatMap(trainerServiceFacade::getTrainerByTrainerId)
+                .flatMap(ServerResponseUtil::ok)
+                .switchIfEmpty(ServerResponseUtil.badRequest(ErrorType.NO_TRAINER_BY_TRAINER_ID));
     }
 
     private Mono<ServerResponse> getServerResponse(TrainingDto trainingDto) {
@@ -142,4 +152,6 @@ public class TrainerHandler {
                 .flatMap(ServerResponseUtil::ok)
                 .switchIfEmpty(ServerResponseUtil.badRequest(ErrorType.NO_TRAINING_UPDATED));
     }
+
+
 }

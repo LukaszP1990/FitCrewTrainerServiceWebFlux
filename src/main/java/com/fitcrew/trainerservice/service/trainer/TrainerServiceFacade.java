@@ -31,4 +31,6 @@ public interface TrainerServiceFacade {
 	Mono<TrainingModel> selectTrainingToSend(String trainerEmail, String trainingName);
 
 	Mono<TrainerModel> createTrainer(TrainerDto trainerDto);
+
+    Mono<TrainerModel> getTrainerByTrainerId(String queryParam);
 }
