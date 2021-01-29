@@ -12,7 +12,6 @@ import org.mockito.quality.Strictness;
 import org.springframework.data.redis.connection.ReactiveRedisConnectionFactory;
 import org.springframework.data.redis.core.ReactiveRedisOperations;
 import org.springframework.data.redis.core.ReactiveValueOperations;
-import org.springframework.test.util.ReflectionTestUtils;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
@@ -23,6 +22,7 @@ import static com.fitcrew.trainerservice.util.TrainerUtil.TRAINER_EMAIL;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
+import static org.springframework.test.util.ReflectionTestUtils.setField;
 
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.LENIENT)
@@ -42,28 +42,36 @@ class TrainerModelCacheTest {
 
     @Test
     void put() {
-        ReflectionTestUtils.setField(trainerModelCache, "factory", factory);
-        ReflectionTestUtils.setField(trainerModelCache, "trainerOps", trainerOps);
+        //given
+        setField(trainerModelCache, "factory", factory);
+        setField(trainerModelCache, "trainerOps", trainerOps);
         when(trainerOps.opsForValue())
                 .thenReturn(reactiveValueOperations);
         when(reactiveValueOperations.set(anyString(), any(), any()))
                 .thenReturn(Mono.just(true));
 
+        //when
         trainerModelCache.put(TRAINER_EMAIL, trainerModel, 1);
 
+        //then
         verify(reactiveValueOperations, times(1)).set(TRAINER_EMAIL, trainerModel, Duration.ofHours(1));
     }
 
     @Test
     void get() {
-        ReflectionTestUtils.setField(trainerModelCache, "factory", factory);
-        ReflectionTestUtils.setField(trainerModelCache, "trainerOps", trainerOps);
+        //given
+        setField(trainerModelCache, "factory", factory);
+        setField(trainerModelCache, "trainerOps", trainerOps);
         when(trainerOps.opsForValue())
                 .thenReturn(reactiveValueOperations);
         when(reactiveValueOperations.get(anyString()))
                 .thenReturn(Mono.just(trainerModel));
 
-        StepVerifier.create(trainerModelCache.get(TRAINER_EMAIL))
+        //when
+        var result = trainerModelCache.get(TRAINER_EMAIL);
+
+        //then
+        StepVerifier.create(result)
                 .expectSubscription()
                 .expectNextMatches(Objects::nonNull)
                 .verifyComplete();
@@ -71,15 +79,18 @@ class TrainerModelCacheTest {
 
     @Test
     void delete() {
-        ReflectionTestUtils.setField(trainerModelCache, "factory", factory);
-        ReflectionTestUtils.setField(trainerModelCache, "trainerOps", trainerOps);
+        //given
+        setField(trainerModelCache, "factory", factory);
+        setField(trainerModelCache, "trainerOps", trainerOps);
         when(trainerOps.opsForValue())
                 .thenReturn(reactiveValueOperations);
         when(reactiveValueOperations.delete(anyString()))
                 .thenReturn(Mono.just(true));
 
+        //when
         trainerModelCache.delete(TRAINER_EMAIL);
 
+        //then
         verify(reactiveValueOperations, times(1)).delete(TRAINER_EMAIL);
     }
 }

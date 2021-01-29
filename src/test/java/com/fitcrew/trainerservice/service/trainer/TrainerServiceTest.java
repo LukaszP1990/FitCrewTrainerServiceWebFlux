@@ -69,6 +69,7 @@ class TrainerServiceTest {
 
     @Test
     void shouldFindByEmailFromCache() {
+        //given
         when(authenticationRequestCache.get(anyString()))
                 .thenReturn(Mono.just(getAuthenticationRequest()));
         when(passwordEncoderUtil.arePasswordsEqualByCache(anyString(), anyString()))
@@ -76,7 +77,11 @@ class TrainerServiceTest {
         when(jwtUtil.generateToken(any()))
                 .thenReturn(JwtUtil.createToken(SECRET, RoleType.ROLE_TRAINER, TRAINER_EMAIL));
 
-        StepVerifier.create(trainerService.findByEmail(getAuthenticationRequest()))
+        //when
+        var result = trainerService.findByEmail(getAuthenticationRequest());
+
+        //then
+        StepVerifier.create(result)
                 .expectSubscription()
                 .expectNextMatches(authenticationResponse -> Objects.nonNull(authenticationResponse.getToken()))
                 .verifyComplete();
@@ -84,6 +89,7 @@ class TrainerServiceTest {
 
     @Test
     void shouldFindByEmailFromDatabase() {
+        //given
         when(authenticationRequestCache.get(anyString()))
                 .thenReturn(Mono.empty());
         when(trainerRepository.findByEmail(anyString()))
@@ -95,7 +101,11 @@ class TrainerServiceTest {
         doNothing()
                 .when(authenticationRequestCache).put(anyString(), any(), anyLong());
 
-        StepVerifier.create(trainerService.findByEmail(getAuthenticationRequest()))
+        //when
+        var result = trainerService.findByEmail(getAuthenticationRequest());
+
+        //then
+        StepVerifier.create(result)
                 .expectSubscription()
                 .expectNextMatches(authenticationResponse -> Objects.nonNull(authenticationResponse.getToken()))
                 .verifyComplete();
@@ -103,6 +113,7 @@ class TrainerServiceTest {
 
     @Test
     void shouldNotFindByEmailWhenTrainerIsNotInCacheAndInDatabase() {
+        //given
         when(authenticationRequestCache.get(anyString()))
                 .thenReturn(Mono.empty());
         when(trainerRepository.findByEmail(anyString()))
@@ -110,19 +121,28 @@ class TrainerServiceTest {
         doNothing()
                 .when(authenticationRequestCache).put(anyString(), any(), anyLong());
 
-        StepVerifier.create(trainerService.findByEmail(getAuthenticationRequest()))
+        //when
+        var result = trainerService.findByEmail(getAuthenticationRequest());
+
+        //then
+        StepVerifier.create(result)
                 .expectSubscription()
                 .verifyComplete();
     }
 
     @Test
     void shouldCreateTrainer() {
+        //given
         when(trainerRepository.findByEmail(anyString()))
                 .thenReturn(Mono.empty());
         when(trainerRepository.save(any()))
                 .thenReturn(Mono.just(trainerDocument));
 
-        StepVerifier.create(trainerService.createTrainer(trainerDto))
+        //when
+        var result = trainerService.createTrainer(trainerDto);
+
+        //then
+        StepVerifier.create(result)
                 .expectSubscription()
                 .expectNextMatches(this::checkTrainerDocumentAssertions)
                 .verifyComplete();
@@ -130,10 +150,15 @@ class TrainerServiceTest {
 
     @Test
     void shouldNotCreateTrainerWhenItAlreadyIsInDatabase() {
+        //given
         when(trainerRepository.findByEmail(anyString()))
                 .thenReturn(Mono.just(trainerDocument));
 
-        StepVerifier.create(trainerService.createTrainer(trainerDto))
+        //when
+        var result = trainerService.createTrainer(trainerDto);
+
+        //then
+        StepVerifier.create(result)
                 .expectSubscription()
                 .expectNextMatches(trainer -> Objects.isNull(trainer.getTrainerId()))
                 .verifyComplete();
@@ -141,10 +166,15 @@ class TrainerServiceTest {
 
     @Test
     void shouldCreateTraining() {
+        //given
         when(feignTrainingService.createTraining(any()))
                 .thenReturn(Mono.just(trainingModel));
 
-        StepVerifier.create(trainerService.createTraining(trainingDto))
+        //when
+        var result = trainerService.createTraining(trainingDto);
+
+        //then
+        StepVerifier.create(result)
                 .expectSubscription()
                 .expectNextMatches(this::checkTrainingModelAssertions)
                 .verifyComplete();
@@ -152,20 +182,30 @@ class TrainerServiceTest {
 
     @Test
     void shouldNotCreateTraining() {
+        //given
         when(feignTrainingService.createTraining(any()))
                 .thenReturn(Mono.empty());
 
-        StepVerifier.create(trainerService.createTraining(trainingDto))
+        //when
+        var result = trainerService.createTraining(trainingDto);
+
+        //then
+        StepVerifier.create(result)
                 .expectSubscription()
                 .verifyComplete();
     }
 
     @Test
     void shouldGetClientsWhoGetTrainingFromTrainer() {
+        //given
         when(feignTrainingService.clientsWhoBoughtTraining(anyString()))
                 .thenReturn(Flux.fromIterable(clientsNames));
 
-        StepVerifier.create(trainerService.getClientsWhoGetTrainingFromTrainer(TRAINING_NAME))
+        //when
+        var result = trainerService.getClientsWhoGetTrainingFromTrainer(TRAINING_NAME);
+
+        //then
+        StepVerifier.create(result)
                 .expectSubscription()
                 .expectNextMatches(clients -> 2 == clients.size())
                 .verifyComplete();
@@ -173,20 +213,30 @@ class TrainerServiceTest {
 
     @Test
     void shouldNotGetClientsWhoGetTrainingFromTrainer() {
+        //given
         when(feignTrainingService.clientsWhoBoughtTraining(anyString()))
                 .thenReturn(Flux.empty());
 
-        StepVerifier.create(trainerService.getClientsWhoGetTrainingFromTrainer(TRAINING_NAME))
+        //when
+        var result = trainerService.getClientsWhoGetTrainingFromTrainer(TRAINING_NAME);
+
+        //then
+        StepVerifier.create(result)
                 .expectSubscription()
                 .verifyComplete();
     }
 
     @Test
     void shouldGetTrainerTrainings() {
+        //given
         when(feignTrainingService.getTrainerTrainings(anyString()))
                 .thenReturn(Flux.fromIterable(trainingModels));
 
-        StepVerifier.create(trainerService.getTrainerTrainings(TRAINER_EMAIL))
+        //when
+        var result = trainerService.getTrainerTrainings(TRAINER_EMAIL);
+
+        //then
+        StepVerifier.create(result)
                 .expectSubscription()
                 .expectNextMatches(trainings -> 3 == trainings.size())
                 .verifyComplete();
@@ -194,20 +244,30 @@ class TrainerServiceTest {
 
     @Test
     void shouldNotGetTrainerTrainings() {
+        //given
         when(feignTrainingService.getTrainerTrainings(anyString()))
                 .thenReturn(Flux.empty());
 
-        StepVerifier.create(trainerService.getTrainerTrainings(TRAINER_EMAIL))
+        //when
+        var result = trainerService.getTrainerTrainings(TRAINER_EMAIL);
+
+        //then
+        StepVerifier.create(result)
                 .expectSubscription()
                 .verifyComplete();
     }
 
     @Test
     void shouldGetBasicInformationAboutTrainer() {
+        //given
         when(trainerModelCacheService.getTrainerModel(anyString()))
                 .thenReturn(Mono.just(trainerModel));
 
-        StepVerifier.create(trainerService.getBasicInformationAboutTrainer(TRAINER_EMAIL))
+        //when
+        var result = trainerService.getBasicInformationAboutTrainer(TRAINER_EMAIL);
+
+        //then
+        StepVerifier.create(result)
                 .expectSubscription()
                 .expectNextMatches(this::checkTrainerModelAssertions)
                 .verifyComplete();
@@ -215,20 +275,30 @@ class TrainerServiceTest {
 
     @Test
     void shouldNotUpdateTraining() {
+        //given
         when(trainerModelCacheService.getTrainerModel(anyString()))
                 .thenReturn(Mono.empty());
 
-        StepVerifier.create(trainerService.getBasicInformationAboutTrainer(TRAINER_EMAIL))
+        //when
+        var result = trainerService.getBasicInformationAboutTrainer(TRAINER_EMAIL);
+
+        //then
+        StepVerifier.create(result)
                 .expectSubscription()
                 .verifyComplete();
     }
 
     @Test
     void shouldDeleteTraining() {
+        //given
         when(feignTrainingService.deleteTraining(anyString(), anyString()))
                 .thenReturn(Mono.just(trainingModel));
 
-        StepVerifier.create(trainerService.deleteTraining(TRAINER_EMAIL, TRAINING_NAME))
+        //when
+        var result = trainerService.deleteTraining(TRAINER_EMAIL, TRAINING_NAME);
+
+        //then
+        StepVerifier.create(result)
                 .expectSubscription()
                 .expectNextMatches(this::checkTrainingModelAssertions)
                 .verifyComplete();
@@ -236,20 +306,30 @@ class TrainerServiceTest {
 
     @Test
     void shouldNotDeleteTraining() {
+        //given
         when(feignTrainingService.deleteTraining(anyString(), anyString()))
                 .thenReturn(Mono.empty());
 
-        StepVerifier.create(trainerService.deleteTraining(TRAINER_EMAIL, TRAINING_NAME))
+        //when
+        var result = trainerService.deleteTraining(TRAINER_EMAIL, TRAINING_NAME);
+
+        //then
+        StepVerifier.create(result)
                 .expectSubscription()
                 .verifyComplete();
     }
 
     @Test
     void shouldSelectTrainingToSend() {
+        //given
         when(feignTrainingService.selectTraining(anyString(), anyString()))
                 .thenReturn(Mono.just(trainingModel));
 
-        StepVerifier.create(trainerService.selectTrainingToSend(TRAINER_EMAIL, TRAINING_NAME))
+        //when
+        var result = trainerService.selectTrainingToSend(TRAINER_EMAIL, TRAINING_NAME);
+
+        //then
+        StepVerifier.create(result)
                 .expectSubscription()
                 .expectNextMatches(this::checkTrainingModelAssertions)
                 .verifyComplete();
@@ -257,10 +337,15 @@ class TrainerServiceTest {
 
     @Test
     void shouldNotSelectTrainingToSend() {
+        //given
         when(feignTrainingService.selectTraining(anyString(), anyString()))
                 .thenReturn(Mono.empty());
 
-        StepVerifier.create(trainerService.selectTrainingToSend(TRAINER_EMAIL, TRAINING_NAME))
+        //when
+        var result = trainerService.selectTrainingToSend(TRAINER_EMAIL, TRAINING_NAME);
+
+        //then
+        StepVerifier.create(result)
                 .expectSubscription()
                 .verifyComplete();
     }

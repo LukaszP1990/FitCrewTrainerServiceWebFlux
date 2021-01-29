@@ -12,7 +12,13 @@ class QueryParamUtilTest {
 
     @Test
     void shouldGetQueryParamValue() {
-        var queryParamValue = QueryParamUtil.getQueryParamValue(getServerRequest(), TRAINER_EMAIL);
+        //given
+        var serverRequest = getServerRequest();
+
+        //when
+        var queryParamValue = QueryParamUtil.getQueryParamValue(serverRequest, TRAINER_EMAIL);
+
+        //then
         assertNotNull(queryParamValue);
         assertEquals(TrainerUtil.TRAINER_EMAIL, queryParamValue);
     }

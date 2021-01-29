@@ -1,6 +1,5 @@
 package com.fitcrew.trainerservice.core.util;
 
-import com.fitcrew.trainerservice.domains.TrainerDocument;
 import com.fitcrew.trainerservice.util.TrainerUtil;
 import org.junit.jupiter.api.Test;
 
@@ -10,13 +9,17 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class RatingTrainerDocumentUtilTest {
 
-    private static final TrainerDocument trainerDocument = TrainerUtil.getTrainerDocument();
-
     @Test
     void shouldGetRatingTrainerDocument() {
+        //given
+        var trainerDocument = TrainerUtil.getTrainerDocument();
+
+        //when
         var ratingTrainerDocument = RatingTrainerDocumentUtil.getRatingTrainerDocument(String.valueOf(1), trainerDocument);
-        assertNotNull(ratingTrainerDocument);
+
+        //then
         assertAll(() -> {
+            assertNotNull(ratingTrainerDocument);
             assertEquals(TRAINER_FIRST_NAME, ratingTrainerDocument.getFirstName());
             assertEquals(TRAINER_LAST_NAME, ratingTrainerDocument.getLastName());
             assertEquals(1, ratingTrainerDocument.getRating());

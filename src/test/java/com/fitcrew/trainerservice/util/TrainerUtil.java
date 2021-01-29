@@ -1,9 +1,6 @@
 package com.fitcrew.trainerservice.util;
 
-import com.fitcrew.FitCrewAppModel.domain.dto.RatingTrainerDto;
 import com.fitcrew.FitCrewAppModel.domain.dto.TrainerDto;
-import com.fitcrew.FitCrewAppModel.domain.model.RankingModel;
-import com.fitcrew.FitCrewAppModel.domain.model.RatingTrainerModel;
 import com.fitcrew.FitCrewAppModel.domain.model.TrainerModel;
 import com.fitcrew.trainerservice.domains.TrainerDocument;
 
@@ -51,7 +48,6 @@ public class TrainerUtil {
     public static TrainerModel getTrainerModel() {
         return prepareTrainerModelData(String.valueOf(1), 1);
     }
-
 
     private static TrainerDocument prepareTrainerDocumentData(String placeInTheRanking,
                                                               Integer value) {

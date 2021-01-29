@@ -4,7 +4,6 @@ import com.fitcrew.FitCrewAppModel.domain.model.TrainerModel;
 import com.fitcrew.trainerservice.core.converter.TrainerConverter;
 import com.fitcrew.trainerservice.core.converter.TrainerConverterImpl;
 import com.fitcrew.trainerservice.dao.TrainerRepository;
-import com.fitcrew.trainerservice.domains.TrainerDocument;
 import com.fitcrew.trainerservice.util.TrainerUtil;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -24,9 +23,6 @@ import static org.mockito.Mockito.when;
 @MockitoSettings(strictness = Strictness.LENIENT)
 class TrainerModelCacheServiceTest {
 
-    private static final TrainerModel trainerModel = TrainerUtil.getTrainerModel();
-    private static final TrainerDocument trainerDocument = TrainerUtil.getTrainerDocument();
-
     private final TrainerRepository trainerRepository = Mockito.mock(TrainerRepository.class);
     private final TrainerModelCache trainerModelCache = Mockito.mock(TrainerModelCache.class);
     private final TrainerConverter trainerConverter = new TrainerConverterImpl();
@@ -34,10 +30,16 @@ class TrainerModelCacheServiceTest {
 
     @Test
     void shouldGetTrainerModelFromCache() {
+        //given
+        var trainerModel = getTrainerModel();
         when(trainerModelCache.get(anyString()))
                 .thenReturn(Mono.just(trainerModel));
 
-        StepVerifier.create(trainerModelCacheService.getTrainerModel(TRAINER_EMAIL))
+        //when
+        var result = trainerModelCacheService.getTrainerModel(TRAINER_EMAIL);
+
+        //then
+        StepVerifier.create(result)
                 .expectSubscription()
                 .expectNextMatches(this::checkTrainerModelAssertions)
                 .verifyComplete();
@@ -45,15 +47,20 @@ class TrainerModelCacheServiceTest {
 
     @Test
     void shouldGetTrainerModelFromDatabase() {
+        //given
+        var trainerDocument = TrainerUtil.getTrainerDocument();
         when(trainerModelCache.get(anyString()))
                 .thenReturn(Mono.empty());
-
         when(trainerRepository.findByEmail(anyString()))
                 .thenReturn(Mono.just(trainerDocument));
         doNothing()
                 .when(trainerModelCache).put(anyString(), any(), anyLong());
 
-        StepVerifier.create(trainerModelCacheService.getTrainerModel(TRAINER_EMAIL))
+        //when
+        var result = trainerModelCacheService.getTrainerModel(TRAINER_EMAIL);
+
+        //then
+        StepVerifier.create(result)
                 .expectSubscription()
                 .expectNextMatches(this::checkTrainerModelAssertions)
                 .verifyComplete();

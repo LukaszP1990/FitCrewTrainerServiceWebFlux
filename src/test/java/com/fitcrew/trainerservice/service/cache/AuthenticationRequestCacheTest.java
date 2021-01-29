@@ -12,7 +12,6 @@ import org.mockito.quality.Strictness;
 import org.springframework.data.redis.connection.ReactiveRedisConnectionFactory;
 import org.springframework.data.redis.core.ReactiveRedisOperations;
 import org.springframework.data.redis.core.ReactiveValueOperations;
-import org.springframework.test.util.ReflectionTestUtils;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
@@ -21,11 +20,10 @@ import java.util.Objects;
 
 import static com.fitcrew.trainerservice.util.TrainerUtil.PASSWORD;
 import static com.fitcrew.trainerservice.util.TrainerUtil.TRAINER_EMAIL;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
-import static org.mockito.Mockito.when;
+import static org.springframework.test.util.ReflectionTestUtils.setField;
 
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.LENIENT)
@@ -43,28 +41,37 @@ class AuthenticationRequestCacheTest {
 
     @Test
     void put() {
-        ReflectionTestUtils.setField(authenticationRequestCache, "factory", factory);
-        ReflectionTestUtils.setField(authenticationRequestCache, "authenticationOps", authenticationOps);
+        //given
+        var authenticationRequest = getAuthenticationRequest();
+        setField(authenticationRequestCache, "factory", factory);
+        setField(authenticationRequestCache, "authenticationOps", authenticationOps);
         when(authenticationOps.opsForValue())
                 .thenReturn(reactiveValueOperations);
         when(reactiveValueOperations.set(anyString(), any(), any()))
                 .thenReturn(Mono.just(true));
 
-        authenticationRequestCache.put(TRAINER_EMAIL, getAuthenticationRequest(), 1);
+        //when
+        authenticationRequestCache.put(TRAINER_EMAIL, authenticationRequest, 1);
 
-        verify(reactiveValueOperations, times(1)).set(TRAINER_EMAIL, getAuthenticationRequest(), Duration.ofHours(1));
+        //then
+        verify(reactiveValueOperations, times(1)).set(TRAINER_EMAIL, authenticationRequest, Duration.ofHours(1));
     }
 
     @Test
     void get() {
-        ReflectionTestUtils.setField(authenticationRequestCache, "factory", factory);
-        ReflectionTestUtils.setField(authenticationRequestCache, "authenticationOps", authenticationOps);
+        //given
+        setField(authenticationRequestCache, "factory", factory);
+        setField(authenticationRequestCache, "authenticationOps", authenticationOps);
         when(authenticationOps.opsForValue())
                 .thenReturn(reactiveValueOperations);
         when(reactiveValueOperations.get(anyString()))
                 .thenReturn(Mono.just(getAuthenticationRequest()));
 
-        StepVerifier.create(authenticationRequestCache.get(TRAINER_EMAIL))
+        //when
+        var result = authenticationRequestCache.get(TRAINER_EMAIL);
+
+        //then
+        StepVerifier.create(result)
                 .expectSubscription()
                 .expectNextMatches(Objects::nonNull)
                 .verifyComplete();

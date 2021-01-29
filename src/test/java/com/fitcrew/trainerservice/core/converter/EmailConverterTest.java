@@ -1,7 +1,5 @@
 package com.fitcrew.trainerservice.core.converter;
 
-import com.fitcrew.FitCrewAppModel.domain.dto.EmailDto;
-import com.fitcrew.FitCrewAppModel.domain.model.EmailModel;
 import com.fitcrew.trainerservice.domains.EmailDocument;
 import com.fitcrew.trainerservice.util.EmailUtil;
 import org.junit.jupiter.api.Test;
@@ -12,34 +10,47 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class EmailConverterTest {
 
-    private static final EmailDocument emailDocument = EmailUtil.getEmailDocument();
-    private static final EmailModel emailModel = EmailUtil.getEmailModel();
-    private static final EmailDto emailDto = EmailUtil.getEmailDto();
     private final EmailConverter emailConverter = Mappers.getMapper(EmailConverter.class);
-    
+
     @Test
     void shouldConvertEmailDtoToEmailDocument() {
+        //given
+        var emailDto = EmailUtil.getEmailDto();
+
+        //when
         var emailDocument = emailConverter.emailDtoToEmailDocument(emailDto);
-        assertNotNull(emailDocument);
+
+        //then
         checkEmailDocumentAssertions(emailDocument);
     }
-    
+
     @Test
     void shouldConvertEmailDocumentToEmailModel() {
+        //given
+        var emailDocument = EmailUtil.getEmailDocument();
+
+        //when
         var emailModel = emailConverter.emailDocumentToEmailModel(emailDocument);
-        assertNotNull(emailModel);
+
+        //then
         checkEmailModelAssertions(emailModel);
     }
 
     @Test
     void shouldConvertEmailModelToEmailDocument() {
-        EmailDocument emailDocument = emailConverter.emailModelToEmailDocument(emailModel);
-        assertNotNull(emailDocument);
+        //given
+        var emailModel = EmailUtil.getEmailModel();
+
+        //when
+        var emailDocument = emailConverter.emailModelToEmailDocument(emailModel);
+
+        //then
         checkEmailDocumentAssertions(emailDocument);
     }
 
     private void checkEmailDocumentAssertions(EmailDocument emailDocument) {
         assertAll(() -> {
+            assertNotNull(emailDocument);
             assertEquals(SENDER, emailDocument.getSender());
             assertEquals(RECIPIENT, emailDocument.getRecipient());
             assertEquals(SUBJECT, emailDocument.getSubject());
@@ -50,6 +61,7 @@ class EmailConverterTest {
 
     private void checkEmailModelAssertions(com.fitcrew.FitCrewAppModel.domain.model.EmailModel emailModel) {
         assertAll(() -> {
+            assertNotNull(emailModel);
             assertEquals(SENDER, emailModel.getSender());
             assertEquals(RECIPIENT, emailModel.getRecipient());
             assertEquals(SUBJECT, emailModel.getSubject());

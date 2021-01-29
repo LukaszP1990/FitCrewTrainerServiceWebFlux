@@ -1,6 +1,5 @@
 package com.fitcrew.trainerservice.core.converter;
 
-import com.fitcrew.FitCrewAppModel.domain.dto.TrainingDto;
 import com.fitcrew.trainerservice.util.TrainingUtil;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
@@ -11,14 +10,19 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class TrainingConverterTest {
 
-    private static final TrainingDto trainingDto = TrainingUtil.getTrainingDto();
     private final TrainingConverter trainingConverter = Mappers.getMapper(TrainingConverter.class);
 
     @Test
     void shouldConvertTrainingDtoToTrainingModel() {
+        //given
+        var trainingDto = TrainingUtil.getTrainingDto();
+
+        //when
         var trainingModel = trainingConverter.trainingDtoToTrainingModel(trainingDto);
-        assertNotNull(trainingModel);
+
+        //then
         assertAll(() -> {
+            assertNotNull(trainingModel);
             assertEquals(1, trainingModel.getClients().size());
             assertEquals(TRAINER_EMAIL, trainingModel.getTrainerEmail());
             assertEquals(DESCRIPTION, trainingModel.getDescription());

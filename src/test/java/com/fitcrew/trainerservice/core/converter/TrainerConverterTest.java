@@ -1,6 +1,5 @@
 package com.fitcrew.trainerservice.core.converter;
 
-import com.fitcrew.FitCrewAppModel.domain.dto.TrainerDto;
 import com.fitcrew.FitCrewAppModel.domain.model.TrainerModel;
 import com.fitcrew.trainerservice.domains.TrainerDocument;
 import com.fitcrew.trainerservice.util.TrainerUtil;
@@ -12,26 +11,35 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class TrainerConverterTest {
 
-    private static final TrainerDto trainerDto = TrainerUtil.getTrainerDto();
-    private static final TrainerDocument trainerDocument = TrainerUtil.getTrainerDocument();
     private final TrainerConverter trainerConverter = Mappers.getMapper(TrainerConverter.class);
 
     @Test
     void shouldConvertTrainerDtoToTrainerDocument() {
+        //given
+        var trainerDto = TrainerUtil.getTrainerDto();
+
+        //when
         var trainerDocument = trainerConverter.trainerDtoToTrainerDocument(trainerDto);
-        assertNotNull(trainerDocument);
+
+        //then
         checkTrainerDocumentAssertions(trainerDocument);
     }
 
     @Test
     void shouldConvertTrainerDocumentToTrainerModel() {
+        //given
+        var trainerDocument = TrainerUtil.getTrainerDocument();
+
+        //when
         var trainerModel = trainerConverter.trainerDocumentToTrainerModel(trainerDocument);
-        assertNotNull(trainerModel);
+
+        //then
         checkTrainerModelAssertions(trainerModel);
     }
 
     private void checkTrainerDocumentAssertions(TrainerDocument trainerDocument) {
         assertAll(() -> {
+            assertNotNull(trainerDocument);
             assertEquals(String.valueOf(1), trainerDocument.getTrainerId());
             assertEquals(TRAINER_ENCRYPTED_PASSWORD, trainerDocument.getEncryptedPassword());
             assertEquals(TRAINER_FIRST_NAME, trainerDocument.getFirstName());
@@ -46,6 +54,7 @@ class TrainerConverterTest {
 
     private void checkTrainerModelAssertions(TrainerModel trainerModel) {
         assertAll(() -> {
+            assertNotNull(trainerModel);
             assertEquals(String.valueOf(1), trainerModel.getTrainerId());
             assertEquals(TRAINER_ENCRYPTED_PASSWORD, trainerModel.getEncryptedPassword());
             assertEquals(TRAINER_FIRST_NAME, trainerModel.getFirstName());

@@ -36,7 +36,11 @@ class RatingTrainerRepositoryTest {
 
     @Test
     void findByTrainerId() {
-        StepVerifier.create(ratingTrainerRepository.findByTrainerId(1L))
+        //when
+        var result = ratingTrainerRepository.findByTrainerId(1L);
+
+        //then
+        StepVerifier.create(result)
                 .expectSubscription()
                 .expectNextMatches(this::checkRatingTrainerDocumentAssertions)
                 .verifyComplete();
@@ -44,7 +48,11 @@ class RatingTrainerRepositoryTest {
 
     @Test
     void shouldNotFindByEmail() {
-        StepVerifier.create(ratingTrainerRepository.findByTrainerId(2L))
+        //when
+        var result = ratingTrainerRepository.findByTrainerId(2L);
+
+        //then
+        StepVerifier.create(result)
                 .expectSubscription()
                 .verifyComplete();
     }

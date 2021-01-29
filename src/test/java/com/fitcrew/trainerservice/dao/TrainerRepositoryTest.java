@@ -34,8 +34,14 @@ class TrainerRepositoryTest {
 
     @Test
     void shouldFindByEmail() {
+        //given
         var email = String.valueOf(1).concat(TRAINER_EMAIL);
-        StepVerifier.create(trainerRepository.findByEmail(email))
+
+        //when
+        var result = trainerRepository.findByEmail(email);
+
+        //then
+        StepVerifier.create(result)
                 .expectSubscription()
                 .expectNextMatches(this::checkTrainerDocumentAssertions)
                 .verifyComplete();
@@ -43,7 +49,11 @@ class TrainerRepositoryTest {
 
     @Test
     void shouldNotFindByEmail() {
-        StepVerifier.create(trainerRepository.findByEmail(TRAINER_EMAIL))
+        //when
+        var result = trainerRepository.findByEmail(TRAINER_EMAIL);
+
+        //then
+        StepVerifier.create(result)
                 .expectSubscription()
                 .verifyComplete();
     }

@@ -35,7 +35,6 @@ class AdminServiceTest {
     private final static TrainerDto trainerDto = TrainerUtil.getTrainerDto();
     private final static TrainerModel trainerModel = TrainerUtil.getTrainerModel();
 
-
     private final TrainerRepository trainerRepository = Mockito.mock(TrainerRepository.class);
     private final TrainerModelCache trainerModelCache = Mockito.mock(TrainerModelCache.class);
     private final TrainerConverter trainerConverter = new TrainerConverterImpl();
@@ -44,10 +43,15 @@ class AdminServiceTest {
 
     @Test
     void shouldGetTrainers() {
+        //given
         when(trainerRepository.findAll())
                 .thenReturn(Flux.fromIterable(trainerDocuments));
 
-        StepVerifier.create(adminService.getTrainers())
+        //when
+        var result = adminService.getTrainers();
+
+        //then
+        StepVerifier.create(result)
                 .expectSubscription()
                 .expectNextMatches(clients -> 3 == clients.size())
                 .verifyComplete();
@@ -55,10 +59,15 @@ class AdminServiceTest {
 
     @Test
     void shouldNotGetTrainersWhenTrainerTableInDatabaseIsEmpty() {
+        //given
         when(trainerRepository.findAll())
                 .thenReturn(Flux.empty());
 
-        StepVerifier.create(adminService.getTrainers())
+        //when
+        var result = adminService.getTrainers();
+
+        //then
+        StepVerifier.create(result)
                 .expectSubscription()
                 .expectNextMatches(clients -> 0 == clients.size())
                 .verifyComplete();
@@ -66,10 +75,15 @@ class AdminServiceTest {
 
     @Test
     void shouldGetTrainerFromCache() {
+        //given
         when(trainerModelCacheService.getTrainerModel(anyString()))
                 .thenReturn(Mono.just(trainerModel));
 
-        StepVerifier.create(adminService.getTrainer(TRAINER_EMAIL))
+        //when
+        var result = adminService.getTrainer(TRAINER_EMAIL);
+
+        //then
+        StepVerifier.create(result)
                 .expectSubscription()
                 .expectNextMatches(this::checkTrainerModelAssertions)
                 .verifyComplete();
@@ -77,16 +91,22 @@ class AdminServiceTest {
 
     @Test
     void shouldNotGetTrainerWhenItIsNotInCacheAndDatabase() {
+        //given
         when(trainerModelCacheService.getTrainerModel(anyString()))
                 .thenReturn(Mono.empty());
 
-        StepVerifier.create(adminService.getTrainer(TRAINER_EMAIL))
+        //when
+        var result = adminService.getTrainer(TRAINER_EMAIL);
+
+        //then
+        StepVerifier.create(result)
                 .expectSubscription()
                 .verifyComplete();
     }
 
     @Test
     void shouldUpdateTrainer() {
+        //given
         when(trainerRepository.findByEmail(anyString()))
                 .thenReturn(Mono.just(trainerDocument));
         when(trainerRepository.save(any()))
@@ -94,7 +114,11 @@ class AdminServiceTest {
         doNothing()
                 .when(trainerModelCache).put(anyString(), any(), anyLong());
 
-        StepVerifier.create(adminService.updateTrainer(trainerDto, TRAINER_EMAIL))
+        //when
+        var result = adminService.updateTrainer(trainerDto, TRAINER_EMAIL);
+
+        //then
+        StepVerifier.create(result)
                 .expectSubscription()
                 .expectNextMatches(this::checkTrainerModelAssertions)
                 .verifyComplete();
@@ -102,24 +126,34 @@ class AdminServiceTest {
 
     @Test
     void shouldNotUpdateTrainerWhenItCannotBeFoundInDatabaseByEmail() {
+        //given
         when(trainerRepository.findByEmail(anyString()))
                 .thenReturn(Mono.empty());
         doNothing()
                 .when(trainerModelCache).put(anyString(), any(), anyLong());
 
-        StepVerifier.create(adminService.updateTrainer(trainerDto, TRAINER_EMAIL))
+        //when
+        var result = adminService.updateTrainer(trainerDto, TRAINER_EMAIL);
+
+        //then
+        StepVerifier.create(result)
                 .expectSubscription()
                 .verifyComplete();
     }
 
     @Test
     void shouldDeleteTrainer() {
+        //given
         when(trainerRepository.findByEmail(anyString()))
                 .thenReturn(Mono.just(trainerDocument));
         doNothing()
                 .when(trainerModelCache).delete(anyString());
 
-        StepVerifier.create(adminService.deleteTrainer(TRAINER_EMAIL))
+        //when
+        var result = adminService.deleteTrainer(TRAINER_EMAIL);
+
+        //then
+        StepVerifier.create(result)
                 .expectSubscription()
                 .expectNextMatches(this::checkTrainerModelAssertions)
                 .verifyComplete();
@@ -127,12 +161,17 @@ class AdminServiceTest {
 
     @Test
     void shouldNotDeleteClientWhenItCannotBeFoundInDatabaseByEmail() {
+        //given
         when(trainerRepository.findByEmail(anyString()))
                 .thenReturn(Mono.empty());
         doNothing()
                 .when(trainerModelCache).delete(anyString());
 
-        StepVerifier.create(adminService.deleteTrainer(TRAINER_EMAIL))
+        //when
+        var result = adminService.deleteTrainer(TRAINER_EMAIL);
+
+        //then
+        StepVerifier.create(result)
                 .expectSubscription()
                 .verifyComplete();
     }

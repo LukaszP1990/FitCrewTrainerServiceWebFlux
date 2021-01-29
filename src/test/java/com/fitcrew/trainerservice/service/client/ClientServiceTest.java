@@ -1,6 +1,5 @@
 package com.fitcrew.trainerservice.service.client;
 
-import com.fitcrew.FitCrewAppModel.domain.dto.EmailDto;
 import com.fitcrew.FitCrewAppModel.domain.model.EmailModel;
 import com.fitcrew.FitCrewAppModel.domain.model.RatingTrainerModel;
 import com.fitcrew.FitCrewAppModel.domain.model.TrainerModel;
@@ -58,12 +57,17 @@ class ClientServiceTest {
 
     @Test
     void shouldSendMessageToTheTrainer() {
+        //given
         when(trainerRepository.findAll())
                 .thenReturn(Flux.fromIterable(trainerDocuments));
         when(emailRepository.save(any()))
                 .thenReturn(Mono.just(emailDocument));
 
-        StepVerifier.create(clientService.sendMessageToTheTrainer(emailModel))
+        //when
+        var result = clientService.sendMessageToTheTrainer(emailModel);
+
+        //then
+        StepVerifier.create(result)
                 .expectSubscription()
                 .expectNextMatches(this::checkEmailModelAssertions)
                 .verifyComplete();
@@ -71,16 +75,22 @@ class ClientServiceTest {
 
     @Test
     void shouldNotSendMessageToTheTrainerWhenNoTrainerExistInDatabase() {
+        //given
         when(trainerRepository.findAll())
                 .thenReturn(Flux.empty());
 
-        StepVerifier.create(clientService.sendMessageToTheTrainer(emailModel))
+        //when
+        var result = clientService.sendMessageToTheTrainer(emailModel);
+
+        //then
+        StepVerifier.create(result)
                 .expectSubscription()
                 .verifyComplete();
     }
 
     @Test
     void shouldNotSendMessageToTheTrainerWhenFirstAndLastNameNotMatchWithAnyTrainerInDatabase() {
+        //given
         var updatedEmailModel = EmailModel.builder()
                 .bodyOfMessage(BODY_OF_MESSAGE)
                 .recipient(RECIPIENT.concat("1"))
@@ -89,17 +99,26 @@ class ClientServiceTest {
         when(trainerRepository.findAll())
                 .thenReturn(Flux.fromIterable(trainerDocuments));
 
-        StepVerifier.create(clientService.sendMessageToTheTrainer(updatedEmailModel))
+        //when
+        var result = clientService.sendMessageToTheTrainer(updatedEmailModel);
+
+        //then
+        StepVerifier.create(result)
                 .expectSubscription()
                 .verifyComplete();
     }
 
     @Test
     void shouldGetRankingOfTrainers() {
+        //given
         when(trainerRepository.findAll())
                 .thenReturn(Flux.fromIterable(trainerDocuments));
 
-        StepVerifier.create(clientService.getRankingOfTrainers())
+        //when
+        var result = clientService.getRankingOfTrainers();
+
+        //then
+        StepVerifier.create(result)
                 .expectSubscription()
                 .expectNextMatches(ranking -> 3 == ranking.size())
                 .verifyComplete();
@@ -107,22 +126,32 @@ class ClientServiceTest {
 
     @Test
     void shouldNotGetRankingOfTrainers() {
+        //given
         when(trainerRepository.findAll())
                 .thenReturn(Flux.empty());
 
-        StepVerifier.create(clientService.getRankingOfTrainers())
+        //when
+        var result = clientService.getRankingOfTrainers();
+
+        //then
+        StepVerifier.create(result)
                 .expectSubscription()
                 .verifyComplete();
     }
 
     @Test
     void shouldGetAverageRatingOfTrainer() {
+        //given
         when(trainerRepository.findByEmail(anyString()))
                 .thenReturn(Mono.just(trainerDocument));
         when(ratingTrainerRepository.findByTrainerId(anyLong()))
                 .thenReturn(Flux.fromIterable(ratingTrainerDocuments));
 
-        StepVerifier.create(clientService.getAverageRatingOfTrainer(TRAINER_EMAIL))
+        //when
+        var result = clientService.getAverageRatingOfTrainer(TRAINER_EMAIL);
+
+        //then
+        StepVerifier.create(result)
                 .expectSubscription()
                 .expectNextMatches(avgRating -> 2d == avgRating)
                 .verifyComplete();
@@ -130,24 +159,34 @@ class ClientServiceTest {
 
     @Test
     void shouldNotGetAverageRatingOfTrainerWhenRatingForTrainerNotExists() {
+        //given
         when(trainerRepository.findByEmail(anyString()))
                 .thenReturn(Mono.just(trainerDocument));
         when(ratingTrainerRepository.findByTrainerId(anyLong()))
                 .thenReturn(Flux.empty());
 
-        StepVerifier.create(clientService.getAverageRatingOfTrainer(TRAINER_EMAIL))
+        //when
+        var result = clientService.getAverageRatingOfTrainer(TRAINER_EMAIL);
+
+        //then
+        StepVerifier.create(result)
                 .expectSubscription()
                 .verifyComplete();
     }
 
     @Test
     void shouldRateTrainer() {
+        //given
         when(trainerRepository.findByEmail(anyString()))
                 .thenReturn(Mono.just(trainerDocument));
         when(ratingTrainerRepository.save(any()))
                 .thenReturn(Mono.just(ratingTrainerDocument));
 
-        StepVerifier.create(clientService.rateTrainer(TRAINER_EMAIL, String.valueOf(10)))
+        //when
+        var result = clientService.rateTrainer(TRAINER_EMAIL, String.valueOf(10));
+
+        //then
+        StepVerifier.create(result)
                 .expectSubscription()
                 .expectNextMatches(this::checkRatingTrainerDocumentAssertions)
                 .verifyComplete();
@@ -155,20 +194,30 @@ class ClientServiceTest {
 
     @Test
     void shouldNotRateTrainerWhenWhenNoTrainerExistInDatabase() {
+        //given
         when(trainerRepository.findByEmail(anyString()))
                 .thenReturn(Mono.empty());
 
-        StepVerifier.create(clientService.rateTrainer(TRAINER_EMAIL, String.valueOf(10)))
+        //when
+        var result = clientService.rateTrainer(TRAINER_EMAIL, String.valueOf(10));
+
+        //then
+        StepVerifier.create(result)
                 .expectSubscription()
                 .verifyComplete();
     }
 
     @Test
     void shouldGetTrainers() {
+        //given
         when(trainerRepository.findAll())
                 .thenReturn(Flux.fromIterable(trainerDocuments));
 
-        StepVerifier.create(clientService.getTrainers())
+        //when
+        var result = clientService.getTrainers();
+
+        //then
+        StepVerifier.create(result)
                 .expectSubscription()
                 .expectNextMatches(trainers -> 3 == trainers.size())
                 .verifyComplete();
@@ -176,20 +225,30 @@ class ClientServiceTest {
 
     @Test
     void shouldNotGetTrainers() {
+        //given
         when(trainerRepository.findAll())
                 .thenReturn(Flux.empty());
 
-        StepVerifier.create(clientService.getTrainers())
+        //when
+        var result = clientService.getTrainers();
+
+        //then
+        StepVerifier.create(result)
                 .expectSubscription()
                 .verifyComplete();
     }
 
     @Test
     void shouldGetTrainer() {
+        //given
         when(trainerRepository.findByEmail(TRAINER_EMAIL))
                 .thenReturn(Mono.just(trainerDocument));
 
-        StepVerifier.create(clientService.getTrainer(TRAINER_EMAIL))
+        //when
+        var result = clientService.getTrainer(TRAINER_EMAIL);
+
+        //then
+        StepVerifier.create(result)
                 .expectSubscription()
                 .expectNextMatches(this::checkTrainerModelAssertions)
                 .verifyComplete();
@@ -197,10 +256,15 @@ class ClientServiceTest {
 
     @Test
     void shouldNotGetTrainer() {
+        //given
         when(trainerRepository.findByEmail(TRAINER_EMAIL))
                 .thenReturn(Mono.empty());
 
-        StepVerifier.create(clientService.getTrainer(TRAINER_EMAIL))
+        //when
+        var result = clientService.getTrainer(TRAINER_EMAIL);
+
+        //then
+        StepVerifier.create(result)
                 .expectSubscription()
                 .verifyComplete();
     }

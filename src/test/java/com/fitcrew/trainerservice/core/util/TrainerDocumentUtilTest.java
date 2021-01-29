@@ -1,7 +1,5 @@
 package com.fitcrew.trainerservice.core.util;
 
-import com.fitcrew.FitCrewAppModel.domain.dto.TrainerDto;
-import com.fitcrew.trainerservice.domains.TrainerDocument;
 import com.fitcrew.trainerservice.util.TrainerUtil;
 import org.junit.jupiter.api.Test;
 
@@ -10,14 +8,18 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class TrainerDocumentUtilTest {
 
-    private static final TrainerDocument trainerDocument = TrainerUtil.getTrainerDocument();
-    private static final TrainerDto trainerDto = TrainerUtil.getTrainerDto();
-
     @Test
     void shouldGetUpdatedTrainerDocument() {
+        //given
+        var trainerDocument = TrainerUtil.getTrainerDocument();
+        var trainerDto = TrainerUtil.getTrainerDto();
+
+        //when
         var updatedTrainerDocument = TrainerDocumentUtil.getUpdatedTrainerDocument(trainerDto, trainerDocument);
-        assertNotNull(updatedTrainerDocument);
+
+        //then
         assertAll(() -> {
+            assertNotNull(updatedTrainerDocument);
             assertEquals(String.valueOf(1), updatedTrainerDocument.getTrainerId());
             assertEquals(TRAINER_ENCRYPTED_PASSWORD, updatedTrainerDocument.getEncryptedPassword());
             assertEquals(TRAINER_FIRST_NAME, updatedTrainerDocument.getFirstName());
